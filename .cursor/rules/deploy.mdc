@@ -1,0 +1,41 @@
+---
+description: Automatizar deploy para GitHub e Vercel quando usuário digitar "deploy"
+alwaysApply: true
+---
+
+# Deploy Automático
+
+Quando o usuário digitar apenas "deploy" (ou variações como "fazer deploy", "deployar", "subir código"), execute automaticamente os seguintes comandos nesta ordem:
+
+## Passos do Deploy
+
+1. **Verificar mudanças e fazer Commit/Push para GitHub:**
+   ```bash
+   cd "/Users/danielsnows/Documents/Danyll Goodman/Nucleus/Emails"
+   git status
+   git add .
+   # Se houver mudanças, fazer commit com mensagem descritiva baseada nos arquivos alterados
+   git commit -m "Deploy: [descrever mudanças principais]"
+   git push origin main
+   ```
+   - Se não houver mudanças para commitar, pule o commit mas ainda faça push
+   - Use mensagens de commit descritivas: "Deploy: Email 2 - [nome]", "Deploy: correções de imagens", etc.
+
+2. **Deploy para Vercel:**
+   ```bash
+   cd "/Users/danielsnows/Documents/Danyll Goodman/Nucleus/Emails"
+   npx vercel --prod --yes
+   ```
+
+## Comportamento
+
+- Execute ambos os comandos automaticamente sem pedir confirmação
+- Se houver erros, informe claramente o que aconteceu
+- Não pergunte se o usuário quer fazer deploy - apenas execute
+- Analise `git status` para criar mensagens de commit mais descritivas
+- Se não houver mudanças para commitar, informe mas continue com o deploy na Vercel
+
+## Exceções
+
+- Se o usuário especificar apenas GitHub ou apenas Vercel, execute apenas o solicitado
+- Se houver conflitos de merge ou erros de autenticação, informe e pare a execução
